@@ -1,5 +1,6 @@
 import Chat from "../../model/Chat";
 import Message from "../../model/Message";
+import User from "../../model/User";
 import { badRequest } from "../../utils/error";
 import { emitNewChatToParticpants } from "../socket";
 

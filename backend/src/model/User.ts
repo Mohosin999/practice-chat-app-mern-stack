@@ -5,7 +5,8 @@ export interface UserDocument extends Document {
   name: string;
   email?: string;
   password?: string;
-  isAI: boolean;
+  googleId?: string;
+  // isAI: boolean;
   avatar?: string | null;
   createdAt: Date;
   updatedAt: Date;
@@ -27,13 +28,13 @@ const userSchema = new Schema(
       type: String,
     },
     googleId: { type: String },
-    isAI: { type: Boolean, default: false },
+    // isAI: { type: Boolean, default: false },
     avatar: { type: String, default: null },
   },
   {
     timestamps: true,
     toJSON: {
-      transform: (doc, ret) => {
+      transform: (_doc, ret) => {
         if (ret) {
           delete (ret as any).password;
         }

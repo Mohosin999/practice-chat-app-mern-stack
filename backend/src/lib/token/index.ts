@@ -1,5 +1,5 @@
-import jwt, { SignOptions } from "jsonwebtoken";
 import { Response } from "express";
+import jwt, { SignOptions } from "jsonwebtoken";
 import { serverError } from "../../utils/error";
 
 interface AccessTokenProps {

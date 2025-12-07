@@ -14,8 +14,6 @@ export const isAuthenticated = async (
   _res: Response,
   next: NextFunction
 ) => {
-  console.log("akash backend ", req.cookies);
-
   const token = req.cookies.accessToken;
   if (!token) throw authenticationError("No token found");
 

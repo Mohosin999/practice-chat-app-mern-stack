@@ -47,9 +47,6 @@ export const notFound = (msg: string = "Resource not found"): CustomError =>
 export const badRequest = (msg: string = "Bad Request"): CustomError =>
   new CustomError(msg, 400);
 
-export const serverError = (
-  msg: string = "Internal Server Error"
-): CustomError => new CustomError(msg, 500);
 
 export const authenticationError = (
   msg: string = "Authentication Failed"
@@ -58,3 +55,7 @@ export const authenticationError = (
 export const authorizationError = (
   msg: string = "Permission Denied"
 ): CustomError => new CustomError(msg, 403);
+
+export const serverError = (
+  msg: string = "Internal Server Error"
+): CustomError => new CustomError(msg, 500);
