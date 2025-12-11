@@ -185,7 +185,7 @@ export const useChat = create<ChatState>()((set, get) => ({
        * Send message to backend
        * Backend returns the REAL message with database ID + timestamps
        */
-      const { data } = await API.post("/chat/messages", {
+      const { data } = await API.post("/messages", {
         chatId,
         content,
         image,
