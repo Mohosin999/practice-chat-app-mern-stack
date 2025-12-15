@@ -117,7 +117,7 @@ const SignUp = () => {
 
                 <div className="text-center text-sm">
                   Already have an account?{" "}
-                  <Link to="/" className="underline">
+                  <Link to="/sign-in" className="underline">
                     Sign in
                   </Link>
                 </div>

@@ -27,11 +27,16 @@ const SingleChat = () => {
     fetchSingleChat(chatId);
   }, [fetchSingleChat, chatId]);
 
-  //Socket Chat room
+  /**
+   * Socket chat room handling:
+   * - Join the current chat room when chatId and socket are available
+   * - Leave the previous chat room when chatId changes or component unmounts
+   */
   useEffect(() => {
     if (!chatId || !socket) return;
 
     socket.emit("chat:join", chatId);
+
     return () => {
       socket.emit("chat:leave", chatId);
     };
@@ -40,7 +45,7 @@ const SingleChat = () => {
   if (isSingleChatLoading) {
     return (
       <div className="h-screen flex items-center justify-center">
-        <Spinner className="w-11 h-11 !text-primary" />
+        <Spinner className="w-11 h-11 text-primary" />
       </div>
     );
   }

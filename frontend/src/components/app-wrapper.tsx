@@ -14,4 +14,3 @@ const AppWrapper = ({ children }: Props) => {
 };
 
 export default AppWrapper;
-

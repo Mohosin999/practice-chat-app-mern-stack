@@ -45,7 +45,7 @@ import Chat from "@/pages/chat";
 import SingleChat from "@/pages/chat/chatId";
 
 export const AUTH_ROUTES = {
-  SIGN_IN: "/login", // <-- changed from "/" to "/login"
+  SIGN_IN: "/sign-in", // <-- changed from "/" to "/login"
   SIGN_UP: "/sign-up",
 };
 
