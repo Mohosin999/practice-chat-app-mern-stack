@@ -4,12 +4,12 @@ import { isUserOnline } from "@/lib/helper";
 import Logo from "./logo";
 import { PROTECTED_ROUTES } from "@/routes/routes";
 import { Button } from "./ui/button";
-import { Moon, Sun } from "lucide-react";
+import { LogOutIcon, Moon, Sun, UserPen } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
+  // DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import AvatarWithBadge from "./avatar-with-badge";
@@ -89,8 +89,14 @@ const AsideBar = () => {
               className="w-48 rounded-lg z-[99999]"
               align="end"
             >
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuItem onClick={logout}>Logout</DropdownMenuItem>
+              <DropdownMenuItem>
+                <UserPen className="mr-0.5" />
+                My Account
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={logout} className="cursor-pointer">
+                <LogOutIcon className="mr-0.5" />
+                Logout
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

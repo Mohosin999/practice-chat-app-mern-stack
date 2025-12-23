@@ -82,7 +82,7 @@ export const useAuth = create<AuthState>()(
           useSocket.getState().disconnectSocket();
 
           toast.success("Logout successfully");
-          window.open("http://localhost:5173/sign-in", "_self");
+          window.open(`${import.meta.env.VITE_API_URL}/sign-in`, "_self");
         } catch (err: any) {
           toast.error(err.response?.data?.message || "Logout failed");
         }
