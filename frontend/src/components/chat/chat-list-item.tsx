@@ -5,7 +5,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import AvatarWithBadge from "../avatar-with-badge";
 import { formatChatTime } from "../../lib/helper";
 import { useChat } from "@/hooks/use-chat";
-import { useAuth } from "@/hooks/use-auth";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -28,8 +27,7 @@ const ChatListItem = ({ chat, currentUserId, onClick }: PropsType) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { deleteChat } = useChat();
-  const { user } = useAuth();
-  const { lastMessage, createdAt, createdBy } = chat;
+  const { lastMessage, createdAt } = chat;
 
   const { name, avatar, isOnline, isGroup } = getOtherUserAndGroup(
     chat,
@@ -70,7 +68,12 @@ const ChatListItem = ({ chat, currentUserId, onClick }: PropsType) => {
     setShowMenu(false);
   };
 
-  const isCreator = createdBy === user?._id;
+  const isUnread = chat.readBy ? !chat.readBy.some(
+    (reader) => {
+      const readerId = typeof reader === "string" ? reader : reader._id;
+      return readerId === currentUserId;
+    }
+  ) : true;
 
   return (
     <>
@@ -104,15 +107,14 @@ const ChatListItem = ({ chat, currentUserId, onClick }: PropsType) => {
               {formatChatTime(lastMessage?.updatedAt || createdAt)}
             </span>
           </div>
-          <p className="text-xs truncate text-muted-foreground -mt-px">
+          <p className={cn("text-xs truncate -mt-px", isUnread ? "font-semibold text-foreground" : "text-muted-foreground")}>
             {getLastMessageText()}
           </p>
         </div>
 
-        {isCreator && (
-          <div className="relative">
+        <div className="relative">
             <button
-              className="p-1.5 hover:bg-sidebar-accent rounded-md transition-colors opacity-0 group-hover:opacity-100"
+              className="p-1.5 hover:bg-sidebar-accent rounded-md transition-colors"
               onClick={(e) => {
                 e.stopPropagation();
                 setShowMenu(!showMenu);
@@ -140,7 +142,6 @@ const ChatListItem = ({ chat, currentUserId, onClick }: PropsType) => {
               </div>
             )}
           </div>
-        )}
       </button>
 
       {/* Delete Confirmation Dialog */}

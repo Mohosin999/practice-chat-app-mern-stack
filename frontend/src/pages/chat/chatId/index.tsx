@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 
 const SingleChat = () => {
   const chatId = useChatId();
-  const { fetchSingleChat, isSingleChatLoading, singleChat } = useChat();
+  const { fetchSingleChat, isSingleChatLoading, singleChat, markChatAsRead } = useChat();
   const { socket, typingUsers } = useSocket();
   const { user } = useAuth();
 
@@ -29,7 +29,8 @@ const SingleChat = () => {
   useEffect(() => {
     if (!chatId) return;
     fetchSingleChat(chatId);
-  }, [fetchSingleChat, chatId]);
+    markChatAsRead(chatId);
+  }, [fetchSingleChat, chatId, markChatAsRead]);
 
   /**
    * Socket chat room handling:

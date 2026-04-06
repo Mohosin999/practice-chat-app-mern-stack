@@ -6,6 +6,7 @@ export interface ChatDocument extends Document {
   isGroup: boolean;
   groupName: string;
   createdBy: mongoose.Types.ObjectId;
+  readBy: mongoose.Types.ObjectId[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -36,6 +37,12 @@ const chatSchema = new Schema<ChatDocument>(
       ref: "User",
       required: true,
     },
+    readBy: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
   },
   {
     timestamps: true,

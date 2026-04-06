@@ -10,17 +10,11 @@ const AppLayout = () => {
   return (
     <AppWrapper>
       <div className="h-full">
-        {/* ChatList */}
-        <div className={cn(chatId ? "hidden lg:block" : "block")}>
-          <ChatList />
-        </div>
+        {/* ChatList - handles its own visibility based on chatId */}
+        <ChatList />
 
-        <div
-          className={cn(
-            "lg:pl-95! pl-7",
-            !chatId ? "hidden lg:block" : "block",
-          )}
-        >
+        {/* Chat content area */}
+        <div className={cn("h-full", !chatId ? "hidden lg:block" : "block")}>
           <Outlet />
         </div>
       </div>

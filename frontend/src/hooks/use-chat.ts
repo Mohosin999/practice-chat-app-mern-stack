@@ -39,6 +39,7 @@ interface ChatState {
   updateChatLastMessage: (chatId: string, lastMessage: MessageType) => void;
   addNewMessage: (chatId: string, message: MessageType) => void;
   removeMessage: (chatId: string, messageId: string) => void;
+  markChatAsRead: (chatId: string) => void;
 }
 
 export const useChat = create<ChatState>()((set, get) => ({
@@ -85,10 +86,12 @@ export const useChat = create<ChatState>()((set, get) => ({
     try {
       // Get all chat records
       const { data } = await API.get("/chats");
+      console.log("Chats fetched:", data.chats);
 
       // Update chat state
       set({ chats: data.chats });
     } catch (error: any) {
+      console.error("Failed to fetch chats:", error);
       toast.error(error?.response?.data?.message || "Failed to fetch chats");
     } finally {
       set({ isChatsLoading: false });
@@ -324,5 +327,20 @@ export const useChat = create<ChatState>()((set, get) => ({
         },
       };
     });
+  },
+
+  markChatAsRead: async (chatId: string) => {
+    const userId = useAuth.getState().user?._id;
+    if (!userId) return;
+    try {
+      await API.put(`/chats/${chatId}/read`);
+      set((state) => ({
+        chats: state.chats.map((chat) =>
+          chat._id === chatId ? { ...chat, readBy: [...(chat.readBy || []), { _id: userId } as UserType] } : chat
+        ),
+      }));
+    } catch (error) {
+      console.error("Failed to mark chat as read", error);
+    }
   },
 }));

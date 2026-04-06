@@ -8,8 +8,11 @@ import ChatListHeader from "./chat-list-header";
 import { useSocket } from "@/hooks/use-socket";
 import type { ChatType } from "@/types/chat";
 import type { MessageType } from "../../types/chat";
+import useChatId from "@/hooks/use-chat-id";
+import { cn } from "@/lib/utils";
 
 const ChatList = () => {
+  const chatId = useChatId();
   const navigate = useNavigate();
   const { socket } = useSocket();
   const {
@@ -101,18 +104,19 @@ const ChatList = () => {
 
   return (
     <div
-      className="fixed inset-y-0
-      pb-20 lg:pb-0
-      lg:max-w-[379px]
-      lg:block
-      border-r
-      border-border
-      bg-sidebar
-      max-w-[calc(100%-40px)]
-      w-full
-      left-10
-      z-[98]
-    "
+      className={cn(
+        "fixed inset-y-0",
+        "pb-20 lg:pb-0",
+        "lg:max-w-[379px]",
+        "border-r",
+        "border-border",
+        "bg-sidebar",
+        "max-w-[calc(100%-40px)]",
+        "w-full",
+        "left-10",
+        "z-[98]",
+        chatId ? "hidden lg:block" : "block"
+      )}
     >
       <div className="flex-col">
         <ChatListHeader onSearch={setSearchQuery} />

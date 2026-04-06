@@ -71,29 +71,33 @@ export const createChatService = async (
 };
 
 export const getUserChatsService = async (userId: string) => {
-  // Fetch all chats where the given user is a participant.
-  // `$in: [userId]` checks if the `participants` array contains the user.
-  const chats = await Chat.find({
-    participants: {
-      $in: [userId],
-    },
-  })
-    // Populate chat participants with only 'name' and 'avatar' fields
-    .populate("participants", "name avatar")
+  if (!userId) {
+    console.log("getUserChatsService: userId is undefined");
+    throw badRequest("User not authenticated");
+  }
 
-    // Populate lastMessage details
-    .populate({
-      path: "lastMessage",
-      populate: {
-        path: "sender", // Populate the sender of the last message
-        select: "name avatar", // Only include name and avatar of the sender
+  try {
+    const chats = await Chat.find({
+      participants: {
+        $in: [userId],
       },
     })
+      .populate("participants", "name avatar")
+      .populate({
+        path: "lastMessage",
+        populate: {
+          path: "sender",
+          select: "name avatar",
+        },
+      })
+      .sort({ updatedAt: -1 });
 
-    // Sort chats by most recently updated (latest message appears first)
-    .sort({ updatedAt: -1 });
-
-  return chats;
+    console.log("getUserChatsService: Found chats:", chats.length);
+    return chats;
+  } catch (error) {
+    console.error("getUserChatsService error:", error);
+    throw error;
+  }
 };
 
 export const getSingleChatService = async (chatId: string, userId: string) => {
@@ -147,10 +151,10 @@ export const validateChatParticipant = async (
 export const deleteChatService = async (chatId: string, userId: string) => {
   const chat = await Chat.findOne({
     _id: chatId,
-    createdBy: userId,
+    participants: userId,
   });
 
-  if (!chat) throw badRequest("You are not authorized to delete this chat");
+  if (!chat) throw badRequest("You are not a participant in this chat");
 
   // Get participants before deleting to emit event
   const participantIds = chat.participants.map((id) => id.toString());
@@ -160,6 +164,23 @@ export const deleteChatService = async (chatId: string, userId: string) => {
 
   // Emit chat deletion event to all participants
   emitChatDeleted(participantIds, chatId);
+
+  return { success: true };
+};
+
+export const markChatAsReadService = async (chatId: string, userId: string) => {
+  const chat = await Chat.findOne({
+    _id: chatId,
+    participants: userId,
+  });
+
+  if (!chat) throw badRequest("You are not a participant in this chat");
+
+  const readBy = chat.readBy || [];
+  if (!readBy.includes(userId as any)) {
+    readBy.push(userId as any);
+    await Chat.findByIdAndUpdate(chatId, { readBy });
+  }
 
   return { success: true };
 };

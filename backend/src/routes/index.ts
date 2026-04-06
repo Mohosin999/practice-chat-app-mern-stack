@@ -31,7 +31,8 @@ router
   .post("/api/v1/chats", passportAuthenticateJwt, chatControllers.createChat)
   .get("/api/v1/chats", passportAuthenticateJwt, chatControllers.getUserChats)
   .get("/api/v1/chats/:id", passportAuthenticateJwt, chatControllers.getSingleChat)
-  .delete("/api/v1/chats/:chatId", passportAuthenticateJwt, chatControllers.deleteChat);
+  .delete("/api/v1/chats/:chatId", passportAuthenticateJwt, chatControllers.deleteChat)
+  .put("/api/v1/chats/:chatId/read", passportAuthenticateJwt, chatControllers.markChatAsRead);
 
 // Message routes
 router.post("/api/v1/messages", passportAuthenticateJwt, messageControllers.sendMessage);
