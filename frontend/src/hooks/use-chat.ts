@@ -39,7 +39,6 @@ interface ChatState {
   updateChatLastMessage: (chatId: string, lastMessage: MessageType) => void;
   addNewMessage: (chatId: string, message: MessageType) => void;
   removeMessage: (chatId: string, messageId: string) => void;
-  markChatAsRead: (chatId: string) => void;
 }
 
 export const useChat = create<ChatState>()((set, get) => ({
@@ -253,11 +252,6 @@ export const useChat = create<ChatState>()((set, get) => ({
 
       if (!targetChat) return state;
 
-      /**
-       * Create a new chat list
-       * - Put the updated chat at the top
-       * - Keep all other chats below in their previous order
-       */
       return {
         chats: [
           { ...targetChat, lastMessage },
@@ -273,9 +267,17 @@ export const useChat = create<ChatState>()((set, get) => ({
    */
   addNewMessage: (chatId, message) => {
     const openedChat = get().singleChat;
+    const currentUserId = useAuth.getState().user?._id;
+
+    // Skip if message is from current user (already added via sendMessage)
+    if (message.sender?._id === currentUserId) return;
 
     // Only add if the user is inside the same chat
     if (openedChat?.chat._id === chatId) {
+      // Avoid duplicate messages by checking if already exists
+      const exists = openedChat.messages.some(m => m._id === message._id);
+      if (exists) return;
+      
       set({
         singleChat: {
           chat: openedChat.chat,
@@ -327,20 +329,5 @@ export const useChat = create<ChatState>()((set, get) => ({
         },
       };
     });
-  },
-
-  markChatAsRead: async (chatId: string) => {
-    const userId = useAuth.getState().user?._id;
-    if (!userId) return;
-    try {
-      await API.put(`/chats/${chatId}/read`);
-      set((state) => ({
-        chats: state.chats.map((chat) =>
-          chat._id === chatId ? { ...chat, readBy: [...(chat.readBy || []), { _id: userId } as UserType] } : chat
-        ),
-      }));
-    } catch (error) {
-      console.error("Failed to mark chat as read", error);
-    }
   },
 }));

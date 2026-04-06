@@ -157,11 +157,11 @@ const ChatHeader = ({
 
   return (
     <div
-      className="sticky top-0 z-50 flex items-center justify-between
+      className="sticky top-0 z-50 flex items-center
       border-b border-border bg-card px-2"
     >
-      {/* ✅ LEFT SIDE (FIXED WIDTH) */}
-      <div className="flex items-center gap-2 h-14 px-4 min-w-[300px] max-w-[300px]">
+      {/* ✅ LEFT SIDE (DYNAMIC WIDTH) */}
+      <div className="flex items-center gap-2 h-14 px-4">
         <ArrowLeft
           className="w-5 h-5 lg:hidden text-muted-foreground cursor-pointer"
           onClick={() => navigate("/")}
@@ -174,12 +174,11 @@ const ChatHeader = ({
           isOnline={isOnline}
         />
 
-        <div className="ml-1 overflow-hidden">
-          <h5 className="font-semibold truncate">{name}</h5>
+        <div className="ml-1">
+          <h5 className="font-semibold whitespace-nowrap">{name}</h5>
 
-          {/* ✅ FIXED HEIGHT + OVERLAY TEXT (NO SHIFT EVER) */}
-          <p className="text-xs relative h-[16px] overflow-hidden">
-            {/* Typing text */}
+          {/* ✅ NO SHIFT TEXT */}
+          <p className="text-xs relative h-[16px]">
             <span
               className={`absolute left-0 top-0 whitespace-nowrap transition-opacity duration-200 ${
                 isTyping
@@ -190,7 +189,6 @@ const ChatHeader = ({
               {getTypingText()}
             </span>
 
-            {/* Normal subheading */}
             <span
               className={`absolute left-0 top-0 whitespace-nowrap transition-opacity duration-200 ${
                 isTyping
@@ -206,8 +204,8 @@ const ChatHeader = ({
         </div>
       </div>
 
-      {/* ✅ RIGHT SIDE (FULLY STABLE) */}
-      <div className="flex-1 flex justify-center">
+      {/* ✅ RIGHT SIDE (CLOSE TO LEFT) */}
+      <div className="ml-6">
         <div
           className="py-4 border-b-2 border-primary
           font-medium text-primary text-center"

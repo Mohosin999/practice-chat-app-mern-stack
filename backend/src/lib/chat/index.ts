@@ -168,19 +168,4 @@ export const deleteChatService = async (chatId: string, userId: string) => {
   return { success: true };
 };
 
-export const markChatAsReadService = async (chatId: string, userId: string) => {
-  const chat = await Chat.findOne({
-    _id: chatId,
-    participants: userId,
-  });
 
-  if (!chat) throw badRequest("You are not a participant in this chat");
-
-  const readBy = chat.readBy || [];
-  if (!readBy.includes(userId as any)) {
-    readBy.push(userId as any);
-    await Chat.findByIdAndUpdate(chatId, { readBy });
-  }
-
-  return { success: true };
-};

@@ -39,6 +39,7 @@ const ChatMessageBody = memo(({ message, onReply, chatId }: Props) => {
       : message.replyTo?.sender?.name;
 
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   const containerClass = cn(
     "group flex gap-2 py-3 px-4",
@@ -145,7 +146,7 @@ const ChatMessageBody = memo(({ message, onReply, chatId }: Props) => {
                   variant="outline"
                   size="icon"
                   onClick={() => onReply(message)}
-                  className="flex opacity-0 group-hover:opacity-100
+                  className="hidden md:flex opacity-0 group-hover:opacity-100
               transition-opacity rounded-full !size-8
               "
                 >
@@ -158,21 +159,49 @@ const ChatMessageBody = memo(({ message, onReply, chatId }: Props) => {
                   />
                 </Button>
 
+                {/* Mobile: tap to show menu */}
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => setShowMobileMenu(true)}
+                  className="md:hidden flex !size-8 rounded-full"
+                >
+                  <ReplyIcon
+                    size={16}
+                    className={cn(
+                      "text-gray-500 dark:text-white !stroke-[1.9]",
+                      isCurrentUser && "scale-x-[-1]"
+                    )}
+                  />
+                </Button>
+
                 {isCurrentUser && (
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="flex opacity-0 group-hover:opacity-100
+                  <>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="hidden md:flex opacity-0 group-hover:opacity-100
                     transition-opacity rounded-full !size-8
                     text-destructive hover:text-destructive
                     "
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setShowDeleteDialog(true);
-                    }}
-                  >
-                    <Trash2 size={16} className="!stroke-[1.9]" />
-                  </Button>
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setShowDeleteDialog(true);
+                      }}
+                    >
+                      <Trash2 size={16} className="!stroke-[1.9]" />
+                    </Button>
+
+                    {/* Mobile delete button */}
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={() => setShowMobileMenu(true)}
+                      className="md:hidden flex !size-8 rounded-full text-destructive"
+                    >
+                      <Trash2 size={16} className="!stroke-[1.9]" />
+                    </Button>
+                  </>
                 )}
               </div>
             )}
@@ -208,6 +237,36 @@ const ChatMessageBody = memo(({ message, onReply, chatId }: Props) => {
               Delete
             </AlertDialogAction>
           </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Mobile Menu Dialog */}
+      <AlertDialog open={showMobileMenu} onOpenChange={setShowMobileMenu}>
+        <AlertDialogContent className="max-w-[300px] p-4">
+          <div className="flex flex-col gap-2">
+            <button
+              onClick={() => {
+                onReply(message);
+                setShowMobileMenu(false);
+              }}
+              className="flex items-center gap-3 p-3 w-full rounded-lg hover:bg-accent transition-colors"
+            >
+              <ReplyIcon size={20} className={cn(isCurrentUser && "scale-x-[-1]")} />
+              <span>Reply</span>
+            </button>
+            {isCurrentUser && (
+              <button
+                onClick={() => {
+                  setShowMobileMenu(false);
+                  setShowDeleteDialog(true);
+                }}
+                className="flex items-center gap-3 p-3 w-full rounded-lg hover:bg-destructive/10 text-destructive transition-colors"
+              >
+                <Trash2 size={20} />
+                <span>Delete</span>
+              </button>
+            )}
+          </div>
         </AlertDialogContent>
       </AlertDialog>
     </>

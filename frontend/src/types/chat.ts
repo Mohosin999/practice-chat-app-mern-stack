@@ -8,7 +8,6 @@ export type ChatType = {
   isAiChat: boolean;
   createdBy: string;
   groupName?: string;
-  readBy?: UserType[];
   createdAt: string;
   updatedAt: string;
   unreadCount?: number;

@@ -68,13 +68,6 @@ const ChatListItem = ({ chat, currentUserId, onClick }: PropsType) => {
     setShowMenu(false);
   };
 
-  const isUnread = chat.readBy ? !chat.readBy.some(
-    (reader) => {
-      const readerId = typeof reader === "string" ? reader : reader._id;
-      return readerId === currentUserId;
-    }
-  ) : true;
-
   return (
     <>
       <button
@@ -107,7 +100,7 @@ const ChatListItem = ({ chat, currentUserId, onClick }: PropsType) => {
               {formatChatTime(lastMessage?.updatedAt || createdAt)}
             </span>
           </div>
-          <p className={cn("text-xs truncate -mt-px", isUnread ? "font-semibold text-foreground" : "text-muted-foreground")}>
+          <p className="text-xs truncate -mt-px text-muted-foreground">
             {getLastMessageText()}
           </p>
         </div>
