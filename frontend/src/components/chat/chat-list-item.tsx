@@ -31,7 +31,7 @@ const ChatListItem = ({ chat, currentUserId, onClick }: PropsType) => {
 
   const { name, avatar, isOnline, isGroup } = getOtherUserAndGroup(
     chat,
-    currentUserId
+    currentUserId,
   );
 
   const [showMenu, setShowMenu] = useState(false);
@@ -75,7 +75,7 @@ const ChatListItem = ({ chat, currentUserId, onClick }: PropsType) => {
         className={cn(
           `w-full flex items-center gap-2 p-2 rounded-sm
            hover:bg-sidebar-accent transition-colors text-left relative group`,
-          pathname.includes(chat._id) && "!bg-sidebar-accent"
+          pathname.includes(chat._id) && "!bg-sidebar-accent",
         )}
       >
         <AvatarWithBadge
@@ -106,35 +106,35 @@ const ChatListItem = ({ chat, currentUserId, onClick }: PropsType) => {
         </div>
 
         <div className="relative">
-            <button
-              className="p-1.5 hover:bg-sidebar-accent rounded-md transition-colors"
-              onClick={(e) => {
-                e.stopPropagation();
-                setShowMenu(!showMenu);
-              }}
-            >
-              <MoreVertical className="w-4 h-4" />
-            </button>
+          <button
+            className="p-1.5 hover:bg-sidebar-accent rounded-md transition-colors"
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowMenu(!showMenu);
+            }}
+          >
+            <MoreVertical className="w-4 h-4" />
+          </button>
 
-            {showMenu && (
-              <div
-                className="absolute right-0 top-full mt-1 w-48 bg-background border border-border rounded-md shadow-lg z-50"
-                onClick={(e) => e.stopPropagation()}
+          {showMenu && (
+            <div
+              className="absolute right-0 top-full mt-1 w-48 bg-background border border-border rounded-md shadow-lg z-50"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                className="w-full flex items-center gap-2 px-3 py-2 text-sm text-destructive hover:bg-destructive/10 transition-colors rounded-md"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowMenu(false);
+                  setShowDeleteDialog(true);
+                }}
               >
-                <button
-                  className="w-full flex items-center gap-2 px-3 py-2 text-sm text-destructive hover:bg-destructive/10 transition-colors rounded-md"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setShowMenu(false);
-                    setShowDeleteDialog(true);
-                  }}
-                >
-                  <Trash2 className="w-4 h-4" />
-                  <span>Delete Chat</span>
-                </button>
-              </div>
-            )}
-          </div>
+                <Trash2 className="w-4 h-4" />
+                <span>Delete Chat</span>
+              </button>
+            </div>
+          )}
+        </div>
       </button>
 
       {/* Delete Confirmation Dialog */}
@@ -151,7 +151,7 @@ const ChatListItem = ({ chat, currentUserId, onClick }: PropsType) => {
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              className="bg-red-600 text-white hover:bg-red-700"
             >
               Delete
             </AlertDialogAction>

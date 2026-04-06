@@ -5,7 +5,7 @@ import type { MessageType } from "@/types/chat";
 import AvatarWithBadge from "../avatar-with-badge";
 import { formatChatTime } from "@/lib/helper";
 import { Button } from "../ui/button";
-import { ReplyIcon, Trash2 } from "lucide-react";
+import { ReplyIcon, Trash2, MoreHorizontal, X } from "lucide-react";
 import { useChat } from "@/hooks/use-chat";
 import { toast } from "sonner";
 import { API } from "@/lib/axios-client";
@@ -43,26 +43,26 @@ const ChatMessageBody = memo(({ message, onReply, chatId }: Props) => {
 
   const containerClass = cn(
     "group flex gap-2 py-3 px-4",
-    isCurrentUser && "flex-row-reverse text-left"
+    isCurrentUser && "flex-row-reverse text-left",
   );
 
   const contentWrapperClass = cn(
     "max-w-[70%]  flex flex-col relative",
-    isCurrentUser && "items-end"
+    isCurrentUser && "items-end",
   );
 
   const messageClass = cn(
     "min-w-[200px] px-3 py-2 text-sm break-words shadow-sm",
     isCurrentUser
       ? "bg-accent dark:bg-primary/40 rounded-tr-xl rounded-l-xl"
-      : "bg-[#F5F5F5] dark:bg-accent rounded-bl-xl rounded-r-xl"
+      : "bg-[#F5F5F5] dark:bg-accent rounded-bl-xl rounded-r-xl",
   );
 
   const replyBoxClass = cn(
     `mb-2 p-2 text-xs rounded-md border-l-4 shadow-md !text-left`,
     isCurrentUser
       ? "bg-primary/20 border-l-primary"
-      : "bg-gray-200 dark:bg-secondary border-l-[#CC4A31]"
+      : "bg-gray-200 dark:bg-secondary border-l-[#CC4A31]",
   );
 
   const handleDeleteMessage = async () => {
@@ -96,17 +96,28 @@ const ChatMessageBody = memo(({ message, onReply, chatId }: Props) => {
           <div
             className={cn(
               "flex items-center gap-1",
-              isCurrentUser && "flex-row-reverse"
+              isCurrentUser && "flex-row-reverse",
             )}
           >
             <div className={messageClass}>
               {!isDeleted ? (
                 <>
-                  <div className="flex items-center gap-2 mb-0.5 pb-1">
-                    <span className="text-xs font-semibold">{senderName}</span>
-                    <span className="text-[11px] text-gray-700 dark:text-gray-300">
-                      {formatChatTime(message?.createdAt)}
-                    </span>
+                  <div className="flex items-center justify-between gap-2 mb-0.5 pb-1">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-semibold">{senderName}</span>
+                      <span className="text-[11px] text-gray-700 dark:text-gray-300">
+                        {formatChatTime(message?.createdAt)}
+                      </span>
+                    </div>
+                    {/* Mobile: three dots inside message bubble */}
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => setShowMobileMenu(true)}
+                      className="md:hidden !size-6 p-0"
+                    >
+                      <MoreHorizontal size={14} className="!stroke-[1.9]" />
+                    </Button>
                   </div>
 
                   {message.replyTo && (
@@ -142,6 +153,7 @@ const ChatMessageBody = memo(({ message, onReply, chatId }: Props) => {
 
             {!isDeleted && (
               <div className="flex items-center gap-1">
+                {/* Desktop: hover to show reply button */}
                 <Button
                   variant="outline"
                   size="icon"
@@ -154,54 +166,27 @@ const ChatMessageBody = memo(({ message, onReply, chatId }: Props) => {
                     size={16}
                     className={cn(
                       "text-gray-500 dark:text-white !stroke-[1.9]",
-                      isCurrentUser && "scale-x-[-1]"
+                      isCurrentUser && "scale-x-[-1]",
                     )}
                   />
                 </Button>
 
-                {/* Mobile: tap to show menu */}
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={() => setShowMobileMenu(true)}
-                  className="md:hidden flex !size-8 rounded-full"
-                >
-                  <ReplyIcon
-                    size={16}
-                    className={cn(
-                      "text-gray-500 dark:text-white !stroke-[1.9]",
-                      isCurrentUser && "scale-x-[-1]"
-                    )}
-                  />
-                </Button>
-
+                {/* Desktop: hover to show delete button */}
                 {isCurrentUser && (
-                  <>
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      className="hidden md:flex opacity-0 group-hover:opacity-100
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="hidden md:flex opacity-0 group-hover:opacity-100
                     transition-opacity rounded-full !size-8
                     text-destructive hover:text-destructive
                     "
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setShowDeleteDialog(true);
-                      }}
-                    >
-                      <Trash2 size={16} className="!stroke-[1.9]" />
-                    </Button>
-
-                    {/* Mobile delete button */}
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      onClick={() => setShowMobileMenu(true)}
-                      className="md:hidden flex !size-8 rounded-full text-destructive"
-                    >
-                      <Trash2 size={16} className="!stroke-[1.9]" />
-                    </Button>
-                  </>
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setShowDeleteDialog(true);
+                    }}
+                  >
+                    <Trash2 size={16} className="!stroke-[1.9]" />
+                  </Button>
                 )}
               </div>
             )}
@@ -224,15 +209,15 @@ const ChatMessageBody = memo(({ message, onReply, chatId }: Props) => {
           <AlertDialogHeader>
             <AlertDialogTitle>Delete Message</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to delete this message? This action cannot be
-              undone.
+              Are you sure you want to delete this message? This action cannot
+              be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDeleteMessage}
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              className="bg-red-600 text-white hover:bg-red-700"
             >
               Delete
             </AlertDialogAction>
@@ -243,7 +228,13 @@ const ChatMessageBody = memo(({ message, onReply, chatId }: Props) => {
       {/* Mobile Menu Dialog */}
       <AlertDialog open={showMobileMenu} onOpenChange={setShowMobileMenu}>
         <AlertDialogContent className="max-w-[300px] p-4">
-          <div className="flex flex-col gap-2">
+          <button
+            onClick={() => setShowMobileMenu(false)}
+            className="absolute right-3 top-3 p-1 rounded-full hover:bg-accent transition-colors"
+          >
+            <X size={18} />
+          </button>
+          <div className="flex flex-col gap-2 mt-2">
             <button
               onClick={() => {
                 onReply(message);
@@ -251,7 +242,10 @@ const ChatMessageBody = memo(({ message, onReply, chatId }: Props) => {
               }}
               className="flex items-center gap-3 p-3 w-full rounded-lg hover:bg-accent transition-colors"
             >
-              <ReplyIcon size={20} className={cn(isCurrentUser && "scale-x-[-1]")} />
+              <ReplyIcon
+                size={20}
+                className={cn(isCurrentUser && "scale-x-[-1]")}
+              />
               <span>Reply</span>
             </button>
             {isCurrentUser && (
