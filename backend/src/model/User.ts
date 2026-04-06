@@ -5,8 +5,6 @@ export interface UserDocument extends Document {
   name: string;
   email?: string;
   password?: string;
-  googleId?: string;
-  // isAI: boolean;
   avatar?: string | null;
   createdAt: Date;
   updatedAt: Date;
@@ -27,8 +25,6 @@ const userSchema = new Schema(
     password: {
       type: String,
     },
-    googleId: { type: String },
-    // isAI: { type: Boolean, default: false },
     avatar: { type: String, default: null },
   },
   {
