@@ -64,7 +64,7 @@ app.get(
       message: "Server is healthy",
       status: "OK",
     });
-  })
+  }),
 );
 
 export default app;
