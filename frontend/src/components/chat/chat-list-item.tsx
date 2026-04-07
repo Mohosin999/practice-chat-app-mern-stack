@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import AvatarWithBadge from "../avatar-with-badge";
 import { formatChatTime } from "../../lib/helper";
 import { useChat } from "@/hooks/use-chat";
+import { useOutsideClick } from "@/hooks/use-outside-click";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -34,7 +35,7 @@ const ChatListItem = ({ chat, currentUserId, onClick }: PropsType) => {
     currentUserId,
   );
 
-  const [showMenu, setShowMenu] = useState(false);
+  const { ref: menuRef, isOpen: showMenu, setIsOpen: setShowMenu } = useOutsideClick(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   const getLastMessageText = () => {
@@ -105,7 +106,7 @@ const ChatListItem = ({ chat, currentUserId, onClick }: PropsType) => {
           </p>
         </div>
 
-        <div className="relative">
+        <div ref={menuRef} className="relative">
           <button
             className="p-1.5 hover:bg-sidebar-accent rounded-md transition-colors"
             onClick={(e) => {

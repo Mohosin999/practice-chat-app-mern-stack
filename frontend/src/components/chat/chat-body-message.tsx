@@ -9,6 +9,7 @@ import { ReplyIcon, Trash2, MoreHorizontal, X } from "lucide-react";
 import { useChat } from "@/hooks/use-chat";
 import { toast } from "sonner";
 import { API } from "@/lib/axios-client";
+import { useOutsideClick } from "@/hooks/use-outside-click";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -38,8 +39,8 @@ const ChatMessageBody = memo(({ message, onReply, chatId }: Props) => {
       ? "You"
       : message.replyTo?.sender?.name;
 
+  const { ref: mobileMenuRef, isOpen: showMobileMenu, setIsOpen: setShowMobileMenu } = useOutsideClick(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   const containerClass = cn(
     "group flex gap-2 py-3 px-4",
