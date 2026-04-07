@@ -15,7 +15,7 @@ router
   .post("/api/v1/auth/register", authControllers.register)
   .post("/api/v1/auth/login", authControllers.login)
   .post("/api/v1/auth/logout", authControllers.logout)
-  .get("/api/v1/auth/status", authControllers.authStatus);
+  .get("/api/v1/auth/status", isAuthenticated, authControllers.authStatus);
 
 router.get("/me", isAuthenticated, (req, res) =>
   res.json({
