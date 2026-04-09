@@ -178,7 +178,7 @@ const ChatMessageBody = memo(({ message, onReply, chatId }: Props) => {
                     <img
                       src={message?.image || ""}
                       alt=""
-                      className="rounded-lg max-w-xs"
+                      className="rounded-lg w-full h-auto max-w-[280px] md:max-w-xs"
                     />
                   )}
 

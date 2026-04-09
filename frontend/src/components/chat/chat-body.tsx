@@ -45,8 +45,7 @@ const ChatBody = ({ chatId, messages, onReply }: Props) => {
   }, [messages]);
 
   return (
-    // <div className="w-full max-w-6xl mx-auto flex flex-col px-3 py-2">
-    <div className="w-full max-w-6xl mx-auto flex flex-col px-3 py-2">
+    <div className="w-full max-w-6xl mx-auto flex flex-col md:px-3 py-2">
       {messages.map((message) => (
         <ChatBodyMessage
           key={message._id}

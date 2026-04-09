@@ -150,7 +150,7 @@ const ChatFooter = ({
               e.preventDefault();
               form.handleSubmit(onSubmit)(e);
             }}
-            className="max-w-6xl px-8.5 mx-auto
+            className="max-w-6xl px-4 md:px-8.5 mx-auto
             flex items-end gap-2
             "
           >
