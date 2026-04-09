@@ -15,7 +15,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import Logo from "@/components/logo";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
@@ -85,9 +84,8 @@ const Account = () => {
               >
                 <ArrowLeft size={20} />
               </Button>
-              <Logo showText={false} imgClass="size-8" />
+              <CardTitle className="text-lg">My Account</CardTitle>
             </div>
-            <CardTitle className="text-lg">My Account</CardTitle>
           </CardHeader>
           <CardContent className="grid gap-6">
             <div className="flex flex-col items-center gap-4">

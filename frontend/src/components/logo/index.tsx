@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import logoSvg from "@/assets/whop-logo.svg";
+import logoSvg from "@/assets/blink-logo.svg";
 import { cn } from "@/lib/utils";
 
 interface LogoProps {
@@ -19,7 +19,7 @@ const Logo = ({
     <img src={logoSvg} alt="Whop" className={cn(imgClass)} />
     {showText && (
       <span className={cn("font-semibold text-lg leading-tight", textClass)}>
-        Adda
+        Blink
       </span>
     )}
   </Link>

@@ -9,6 +9,7 @@ hody {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  font-family: "DM Sans", serif !important;
 }
 
 #root {
@@ -193,7 +194,9 @@ hody {
   background: oklch(0.98 0.01 240 / 40%);
 }
 
-/* Make sure header stays on top on mobile keyboards */
+/* ==================================================
+*  Make sure header stays on top on mobile keyboards
+* ==================================================*/
 @media (max-width: 768px) {
   .sticky {
     position: sticky !important;
