@@ -156,3 +156,47 @@ hody {
     @apply bg-background text-foreground;
   }
 }
+
+/* ============= Custom Scrollbar ============= */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: oklch(0.7 0.02 240 / 30%);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.7 0.02 240 / 50%);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: oklch(0.98 0.01 240 / 20%);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.98 0.01 240 / 40%);
+}
+
+/* ============= Mobile Fixes ============= */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Prevent pull-to-refresh on chat area */
+.overflow-y-auto {
+  overscroll-behavior: contain;
+}
+
+/* Better mobile scrolling */
+@media (max-width: 768px) {
+  .overflow-y-auto {
+    -webkit-overflow-scrolling: touch;
+  }
+}
